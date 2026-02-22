@@ -1,50 +1,227 @@
-<html>
-    <head>
-        <title>Wело Bайки</title>
-        <link href="inde.css" type="text/css" rel="stylesheet"/>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oi&family=Oswald:wght@200..700&family=Press+Start+2P&family=Tektur:wght@400..900&family=Yanone+Kaffeesatz:wght@200..700&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <main>
-            <div class = 'blok1'>    
-                <nav>
-                    <a href = 'index.html'><img src="logo.png" alt="Лого" width="87" height="49" class = 'logo'></a>
-                    <div class = 'nad'>
-                        <a href = 'velo.html' class = 'velos'>велосипеды</a>
-                        <a href = 'helmet.html' class = 'zap'>запчасти</a>
-                        <a href = '#' class = 'eki'>экипировка</a>
-                        <a href = '#' class = 'aks'>аксессуары</a>
-                    </div>
-                    <a href = '#'><img src="Telegram App.png" alt="tg" width="31" height="31" class = 'tg'></a>
-                    <a href = 'https://vk.com/club229016361'><img src="VK com.png" alt="vk" width="34" height="34" class = 'vk'></a>
-                </nav>
-                <div class ='bl'>
-                    <div class ='blo'>
-                        <p class = 'il'>электро</br>велосипеды</p>
-                        <p class = 'te'>Cento10 Hybrid — это гоночный велосипед с помогающим педалированию электроприводом, который устанавливает новый, очень высокий стандарт для данной категории</p>
-                    </div>
-                </div>
-            </div>
-            <div class = 'ml'>
-                <img src="2.png" alt="wahoo" width="233" height="75" class = 'b'>
-                <img src="3.png" alt="trek" width="244" height="104" class = 'c'>
-                <img src="4.png" alt="topeak" width="315" height="127" class = 'd'>
-                <img src="5.png" alt="tack" width="125" height="125" class = 'e'>
-                <img src="6.png" alt="sram" width="245" height="61" class = 'f'>
-            </div>
-            <div class = 'blok2'>
-                <div class = 'kat'>
-                    <p class = 'katalog'>Каталог</p>
-                    <div class = 'kati'>
-                        <a href = 'velo.html'><img src="velo.png" alt="Велосипеды" width="864" height="300" class = 'velos'></a>
-                        <a href = '#'><img src="zap.png" alt="Запчасти" width="400" height="190" class = 'zapch'></a>
-                        <a href = '#'><img src="aks.png" alt="Аксессуары" width="400" height="252" class = 'aksi'></a>
-                        <a href = 'helmet.html'><img src="aki.png" alt="Экиперовка" width="448" height="458" class = 'akip'></a>
-                    </div>
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Определение устройства</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .loader-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .device-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            text-align: left;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-container">
+        <div class="loader"></div>
+        <h1>Определяем ваше устройство...</h1>
+        <p>Загружаем оптимальную версию сайта</p>
+        
+        <div class="device-info">
+            <div id="info">Идет анализ User-Agent...</div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button onclick="forceVersion('desktop')" style="margin: 5px;">💻 Десктоп</button>
+            <button onclick="forceVersion('mobile')" style="margin: 5px;">📱 Мобильная</button>
+            <button onclick="forceVersion('tablet')" style="margin: 5px;">📟 Планшет</button>
+            <button onclick="forceVersion('tv')" style="margin: 5px;">📺 ТВ</button>
+        </div>
+    </div>
+
+    <script>
+        // Детектор устройств
+        function detectDevice() {
+            const ua = navigator.userAgent.toLowerCase();
+            const infoDiv = document.getElementById('info');
+            
+            let deviceInfo = {
+                type: 'desktop',
+                isMobile: false,
+                isTablet: false,
+                isDesktop: true,
+                isTV: false,
+                userAgent: navigator.userAgent,
+                screenWidth: window.screen.width,
+                screenHeight: window.screen.height,
+                touchSupport: 'ontouchstart' in window
+            };
+            
+            // Показываем информацию в реальном времени
+            infoDiv.innerHTML = `
+                <strong>User-Agent:</strong> ${navigator.userAgent}<br>
+                <strong>Экран:</strong> ${window.screen.width}×${window.screen.height}px<br>
+                <strong>Touch:</strong> ${deviceInfo.touchSupport ? 'Да' : 'Нет'}<br>
+                <strong>Платформа:</strong> ${navigator.platform}<br>
+                <strong>Язык:</strong> ${navigator.language}
+            `;
+            
+            // Определяем тип устройства
+            if (/(tablet|ipad|playbook|silk)|(android(?!.*mobile))/i.test(ua)) {
+                deviceInfo.type = 'tablet';
+                deviceInfo.isTablet = true;
+                deviceInfo.isDesktop = false;
+            } else if (/mobile|android|iphone|ipod|blackberry|webos/i.test(ua)) {
+                deviceInfo.type = 'mobile';
+                deviceInfo.isMobile = true;
+                deviceInfo.isDesktop = false;
+            } else if (/smart-tv|smarttv|appletv|googletv|hbbtv|crkey/i.test(ua)) {
+                deviceInfo.type = 'tv';
+                deviceInfo.isTV = true;
+                deviceInfo.isDesktop = false;
+            }
+            
+            // Дополнительные проверки по размеру экрана
+            if (window.screen.width <= 768 && !deviceInfo.isTablet) {
+                deviceInfo.type = 'mobile';
+                deviceInfo.isMobile = true;
+                deviceInfo.isDesktop = false;
+            } else if (window.screen.width <= 1024 && window.screen.width > 768) {
+                if (!deviceInfo.isMobile && !deviceInfo.isTablet) {
+                    deviceInfo.type = 'tablet';
+                    deviceInfo.isTablet = true;
+                    deviceInfo.isDesktop = false;
+                }
+            }
+            
+            return deviceInfo;
+        }
+        
+        // Загружаем нужную версию сайта
+        function loadSiteVersion(version = null) {
+            const device = detectDevice();
+            const forcedVersion = localStorage.getItem('forcedVersion');
+            
+            // Определяем финальную версию
+            let finalVersion;
+            if (version) {
+                finalVersion = version;
+                localStorage.setItem('forcedVersion', version);
+            } else if (forcedVersion) {
+                finalVersion = forcedVersion;
+            } else {
+                finalVersion = device.type;
+            }
+            
+            // Имя твоего сайта (ПОМЕНЯЙ ЗДЕСЬ!)
+            const siteName = 'mysite';
+            
+            // Для GitHub Pages: получаем базовый путь
+            const isGitHubPages = window.location.hostname.includes('github.io');
+            let basePath = '';
+            
+            if (isGitHubPages) {
+                // Получаем путь к репозиторию из URL
+                const pathParts = window.location.pathname.split('/');
+                if (pathParts.length > 2) {
+                    // Формат: /username/repo-name/
+                    basePath = '/' + pathParts[1] + '/' + pathParts[2] + '/';
+                }
+            }
+            
+            // Формируем URL к нужной версии
+            const siteUrl = `${basePath}sites/${siteName}_${finalVersion}.html`;
+            
+            // Показываем информацию
+            document.getElementById('info').innerHTML += `
+                <br><br><strong>Определено как:</strong> ${device.type}<br>
+                <strong>Загружаем:</strong> ${finalVersion} версию<br>
+                <strong>Файл:</strong> ${siteUrl}
+            `;
+            
+            // Загружаем сайт через 2 секунды (чтобы увидеть информацию)
+            setTimeout(() => {
+                window.location.href = siteUrl;
+            }, 2000);
+        }
+        
+        // Принудительное переключение версии
+        function forceVersion(version) {
+            localStorage.setItem('forcedVersion', version);
+            document.getElementById('info').innerHTML += `<br><br><strong>Принудительно:</strong> ${version}`;
+            setTimeout(() => {
+                loadSiteVersion(version);
+            }, 1000);
+        }
+        
+        // Очистка принудительной версии
+        function clearForcedVersion() {
+            localStorage.removeItem('forcedVersion');
+        }
+        
+        // Автозапуск при загрузке
+        window.addEventListener('DOMContentLoaded', () => {
+            // Проверяем, не перешли ли мы уже с версией сайта
+            const urlParams = new URLSearchParams(window.location.search);
+            const force = urlParams.get('force');
+            
+            if (force) {
+                loadSiteVersion(force);
+            } else {
+                loadSiteVersion();
+            }
+        });
+    </script>
+</body>
+</html>            </div>
             <div class = 'natp'>
                 <div class = 'natp1'>
                     <p class = 'nich'>Ничего не сможет</br>остановить вас</p>
@@ -118,3 +295,4 @@
         </main>
     </body>
 </html>
+
