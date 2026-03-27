@@ -1,40 +1,140 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Определение устройства</title>
+    <title>Химический Тренажер</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 450px; text-align: center; }
+        .q-box { background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 15px 0; min-height: 80px; }
+        .label { font-size: 0.9rem; color: #546e7a; margin-bottom: 8px; font-weight: bold; }
+        .quest { font-size: 1.6rem; font-weight: bold; color: #1565c0; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #cfd8dc; border-radius: 6px; box-sizing: border-box; font-size: 1.1rem; text-align: center; }
+        .btns { display: flex; gap: 10px; }
+        button { flex: 1; background: #1e88e5; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+        button#nextBtn { background: #455a64; display: none; }
+        .res { margin-top: 15px; font-weight: bold; min-height: 24px; }
+        .ok { color: #2e7d32; }
+        .err { color: #c62828; }
+        sub { font-size: 0.7em; vertical-align: sub; }
+        sup { font-size: 0.7em; vertical-align: super; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Тренажер: Кислоты</h2>
+    <div class="q-box">
+        <div id="lbl" class="label">Загрузка...</div>
+        <div id="qst" class="quest"></div>
+    </div>
+    <input type="text" id="ans" placeholder="Введите ответ..." autocomplete="off">
+    
+    <div class="btns">
+        <button id="checkBtn" onclick="checkAnswer()">Проверить</button>
+        <button id="nextBtn" onclick="nextQuestion()">Дальше</button>
+    </div>
+
+    <div id="fb" class="res"></div>
+    <div style="margin-top:20px; font-size: 0.8rem; color: #90a4ae;">
+        Верно: <span id="ccnt">0</span> | Всего: <span id="tcnt">0</span>
+    </div>
+</div>
+
+<script>
+    var acids = [
+        {f:"HF", n:"фтороводородная", r:"F-"},
+        {f:"HCl", n:"соляная", r:"Cl-"},
+        {f:"HBr", n:"бромоводородная", r:"Br-"},
+        {f:"HI", n:"йодоводородная", r:"I-"},
+        {f:"H2S", n:"сероводородная", r:"S2-"},
+        {f:"HCN", n:"циановодородная", r:"CN-"},
+        {f:"HNO2", n:"азотистая", r:"NO2-"},
+        {f:"HNO3", n:"азотная", r:"NO3-"},
+        {f:"H3PO4", n:"ортофосфорная", r:"PO43-"},
+        {f:"H2SO3", n:"сернистая", r:"SO32-"},
+        {f:"H2SO4", n:"серная", r:"SO42-"},
+        {f:"H2CO3", n:"угольная", r:"CO32-"},
+        {f:"H2SiO3", n:"кремниевая", r:"SiO32-"},
+        {f:"HMnO4", n:"марганцовая", r:"MnO4-"},
+        {f:"CH3COOH", n:"уксусная", r:"CH3COO-"}
+    ];
+
+    var cur = {};
+    var correctCount = 0;
+    var totalCount = 0;
+
+    function fmt(s) {
+        if (!s) return "";
+        return s.replace(/(\d+)(?=[+-])/g, '<sup>$1</sup>') 
+                .replace(/([+-])/g, '<sup>$1</sup>')        
+                .replace(/(\d+)/g, '<sub>$1</sub>');        
+    }
+
+function nextQuestion() {
+        var item = acids[Math.floor(Math.random() * acids.length)];
+        var mode = Math.floor(Math.random() * 4);
+        
+        document.getElementById('ans').value = '';
+        document.getElementById('ans').disabled = false;
+        document.getElementById('fb').innerHTML = '';
+        document.getElementById('checkBtn').style.display = 'block';
+        document.getElementById('nextBtn').style.display = 'none';
+        
+        // Теперь везде в ответах или вопросах фигурирует только название кислоты (item.n)
+        if(mode === 0) {
+            cur = {q: item.f, a: item.n, l: "Назовите кислоту по формуле"};
+        } else if(mode === 1) {
+            cur = {q: item.n, a: item.f, l: "Напишите формулу кислоты"};
+        } else if(mode === 2) {
+            cur = {q: item.r, a: item.n, l: "Назовите кислоту по остатку"};
+        } else {
+            cur = {q: item.n, a: item.r, l: "Напишите формулу остатка этой кислоты"};
+        }
+
+        document.getElementById('lbl').innerText = cur.l;
+        document.getElementById('qst').innerHTML = fmt(cur.q);
+        document.getElementById('ans').focus();
+    }
+
+    function checkAnswer() {
+        var userAns = document.getElementById('ans').value.trim().toLowerCase();
+        var rightAns = cur.a.toLowerCase();
+        
+        if (userAns === "") return;
+
+        totalCount++;
+        document.getElementById('ans').disabled = true;
+        document.getElementById('checkBtn').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'block';
+
+        if(userAns === rightAns) {
+            document.getElementById('fb').innerHTML = '<span class="ok">Правильно!</span>';
+            correctCount++;
+        } else {
+            document.getElementById('fb').innerHTML = '<span class="err">Ошибка. Ответ: ' + fmt(cur.a) + '</span>';
         }
         
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        document.getElementById('c_cnt').innerText = correctCount;
+        document.getElementById('t_cnt').innerText = totalCount;
+    }
+
+    document.getElementById('ans').onkeypress = function(e) {
+        if ((e.keyCode || e.which) == 13) {
+            if (document.getElementById('checkBtn').style.display !== 'none') {
+                checkAnswer();
+            } else {
+                nextQuestion();
+            }
         }
-        
-        .loader-container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-        }
-        
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
+    };
+
+    nextQuestion();
+</script>
+</body>
+</html>            border: 5px solid #f3f3f3;
             border-top: 5px solid #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
